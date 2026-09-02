@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Symfony Service"
+  short_description: "Give Docker command for new Symfony services"
+  default_prompt: "Use $create-symfony-service to give me the Docker command for creating a new Symfony microservice."

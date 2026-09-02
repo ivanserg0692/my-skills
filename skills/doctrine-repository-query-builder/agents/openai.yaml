@@ -1,0 +1,4 @@
+interface:
+  display_name: "Doctrine Repository Query Builder"
+  short_description: "Reuse Doctrine QueryBuilder relation joins."
+  default_prompt: "Use $doctrine-repository-query-builder to create or refactor a Doctrine repository query with reusable relation helper methods."

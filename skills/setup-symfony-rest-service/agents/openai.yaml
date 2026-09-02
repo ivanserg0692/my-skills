@@ -1,0 +1,3 @@
+display_name: Setup Symfony REST Service
+short_description: Plan Symfony REST dependencies.
+default_prompt: Inspect a Symfony service and recommend missing Composer packages for a production-ready REST API without modifying the project.

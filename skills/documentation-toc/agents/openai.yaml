@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentation TOC"
+  short_description: "Add generated TOC blocks to large docs"
+  default_prompt: "Use $documentation-toc when adding or expanding Markdown documentation with many sections."

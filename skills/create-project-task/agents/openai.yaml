@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Project Task"
+  short_description: "Create task docs in the project format"
+  default_prompt: "Use $create-project-task to draft a new project task document."

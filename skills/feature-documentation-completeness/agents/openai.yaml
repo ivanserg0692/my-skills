@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Documentation Completeness"
+  short_description: "Audit feature workflow docs before closure"
+  default_prompt: "Use $feature-documentation-completeness to check whether this feature has enough workflow documentation before wrapping up."

@@ -1,0 +1,13 @@
+# Personal Codex Instructions
+
+## Working Agreements
+
+- Keep reusable personal rules concise and independent of a single application.
+- Put application-specific rules in the `AGENTS.md` of that application's repository.
+- Ask for confirmation before making changes when the active project requires it.
+
+## Skill Maintenance
+
+- Keep `skills/INDEX.md` synchronized when skills are added, removed, renamed, adapted, or recategorized.
+- Preserve the distinction between internal, adapted, and external skills.
+- Record the original external source when it is known.

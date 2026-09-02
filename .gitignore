@@ -1,0 +1,12 @@
+# Local Codex configuration may contain machine-specific integrations.
+/config.toml
+
+# Downloaded source archives and Windows metadata are not part of a skill.
+*.zip
+*:Zone.Identifier
+
+# Local tooling artifacts.
+.DS_Store
+**/__pycache__/
+**/*.py[cod]
+

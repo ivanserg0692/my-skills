@@ -1,0 +1,4 @@
+interface:
+  display_name: "Docker Environment Context"
+  short_description: "Choose correct prod or dev Compose commands"
+  default_prompt: "Use $docker-environment-context to give me the correct Docker Compose command for the current environment."

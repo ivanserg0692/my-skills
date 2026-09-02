@@ -1,0 +1,4 @@
+interface:
+  display_name: "Application Collections"
+  short_description: "Decide when arrays should become named application collections."
+  default_prompt: "Use application collection heuristics to review this code and explain whether a named collection is justified."

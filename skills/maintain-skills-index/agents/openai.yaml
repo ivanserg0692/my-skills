@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain Skills Index"
+  short_description: "Keep local skills index current."
+  default_prompt: "Use $maintain-skills-index when changing local project skills."

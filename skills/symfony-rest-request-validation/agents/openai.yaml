@@ -1,0 +1,4 @@
+interface:
+  display_name: "Symfony REST Request Validation"
+  short_description: "Use DTO, Serializer, and Validator for REST bodies."
+  default_prompt: "Use $symfony-rest-request-validation to implement a Symfony REST JSON request DTO with Serializer deserialization and Validator constraints."

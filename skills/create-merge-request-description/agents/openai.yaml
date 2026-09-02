@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create MR Description"
+  short_description: "Draft project-style MR Markdown."
+  default_prompt: "Use $create-merge-request-description to draft a Markdown merge request description."
