@@ -160,11 +160,52 @@ final readonly class CreateOrderHandler
 
 Controllers, console commands, and Messenger handlers are **driving adapters**. They translate a delivery mechanism into an application call and translate the result back out. They contain no business logic.
 
+## Data contracts belong to ports
+
+A port must describe not only the operation but also the data contract that crosses its boundary. Do not make an adapter depend on a concrete application DTO when the adapter needs only a smaller, stable capability.
+
+For example, a search-index output adapter may need only a document identifier and its indexable representation. Define that contract beside the output port, then let the application DTO implement it:
+
+```php
+// ✅ Owned by the inner output-port boundary
+namespace App\Search\Product\Port\Output\Document;
+
+interface ProductSearchIndexDocumentInterface
+{
+    public function getId(): int;
+
+    /** @return array<string, mixed> */
+    public function toArray(): array;
+}
+```
+
+```php
+interface ProductSearchIndexGatewayInterface
+{
+    /** @param ProductSearchIndexDocumentInterface[] $documents */
+    public function bulkIndex(string $indexName, array $documents): BulkIndexResult;
+}
+```
+
+This keeps the dependency direction explicit:
+
+```text
+application DTO -> output-port document contract <- infrastructure adapter
+```
+
+- Put the contract in the inner port namespace, not under an Elasticsearch, Doctrine, HTTP, or other infrastructure namespace.
+- Type collection elements against the port contract, including PHPDoc generic element types when PHP cannot express them natively.
+- Keep adapter-specific metadata and mechanics, such as an Elasticsearch schema version, mapping, index name, or bulk wire format, inside that adapter's infrastructure.
+- Prefer the smallest contract the port operation actually needs. Do not expose the entire application DTO merely for adapter convenience.
+- Do not create a parallel interface automatically when an immutable DTO is intentionally designed as the stable port contract itself. Introduce a separate interface when it removes a real dependency on a concrete model or supports multiple implementations.
+
 ## Gotchas
 
 - Agent puts `EntityManagerInterface` into the application/domain layer — depend on a repository **port** instead.
 - Agent imports `Symfony\…` or `Doctrine\…` in `src/Domain/` — the domain must stay framework-free (or use the agreed pragmatic exception for ORM attributes only).
 - Agent makes the application layer depend on the concrete `DoctrineOrderRepository` — depend on the interface; wire it in `services.yaml`.
 - Agent returns a Symfony `Response` from a use-case handler — return a domain value (ID, DTO); the controller builds the HTTP response.
+- Agent types an output port or its collection PHPDoc with a concrete application DTO even though the adapter needs only a smaller contract — define that contract at the port boundary.
+- Agent defines a data contract under `Infrastructure` and makes the application implement it — move ownership inward so infrastructure depends on the port.
 - Agent puts validation/HTTP concerns in the domain — those belong in adapters.
 - Agent generates `#[ORM\Entity]` on a "pure" domain class when the project chose the strict XML-mapping strategy — check the README's stated strategy first.

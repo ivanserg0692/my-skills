@@ -29,7 +29,7 @@ Skills written by the project owner.
 
 ### Application Architecture
 
-- `application-collections`
+- `application-collections` - chooses collection shapes and organizes related DTOs into clear, meaning-based namespaces
 
 ## Adapted Skills
 
@@ -38,19 +38,12 @@ Externally sourced skills that have been substantially adapted for the project o
 ### Application Architecture
 
 - `domain-driven-design` - original source unknown
+- `hexagonal-architecture` - adds project guidance for port-owned data contracts; original source unknown
 - `layered-architecture` - original source unknown
 
 ### Symfony DTO / Validation
 
 - `dto-and-validation` - original source unknown
-
-## External Skills
-
-Downloaded skills used without substantial adaptation.
-
-### Application Architecture
-
-- `hexagonal-architecture`
 
 ## Maintenance
 

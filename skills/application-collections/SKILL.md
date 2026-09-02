@@ -1,6 +1,6 @@
 ---
 name: application-collections
-description: Use when reviewing, designing, or refactoring application/domain code where arrays, lists, DTO lists, or Doctrine entity collections are repeatedly mapped, filtered, grouped, validated, indexed, or passed between layers. Helps decide when to keep a plain array, create a named DTO/application collection, use an entity collection, or avoid premature generic abstractions.
+description: Use when reviewing, designing, or refactoring application/domain code where arrays, lists, DTOs, or Doctrine entity collections are repeatedly mapped, filtered, grouped, validated, indexed, passed between layers, or mixed with services in one namespace. Helps choose the right data shape and organize multiple DTOs without premature abstractions.
 ---
 
 # Application Collections
@@ -122,6 +122,56 @@ processArray()
 
 Use `get` prefix for read accessors when the project follows PHP/Symfony getter conventions. Use `to*` for conversion/export to another representation. Use `from*` for named construction from another model.
 
+## DTO Namespace Organization
+
+Keep one narrow DTO beside its consumer when that placement is clear and matches the local project convention. Do not create a directory for a single class merely because it is a DTO.
+
+When two or more DTOs accumulate in the same namespace and are mixed with application services, builders, handlers, or orchestrators, group them under a nested `Dto` namespace. Keep the services in their existing application namespace. For example:
+
+```text
+Application/
+|-- Dto/
+|   |-- BulkIndexResult.php
+|   |-- ProductSearchDocument.php
+|   `-- ProductSearchReindexProgress.php
+|-- ProductSearchDocumentBuilder.php
+`-- ProductSearchRebuilder.php
+```
+
+When the `Dto` namespace itself contains multiple coherent groups that serve different contracts or stages of a use case, split it into meaning-based subnamespaces. Name each group after what the data represents in the scenario, not after a generic technical bucket:
+
+```text
+Application/
+|-- Dto/
+|   |-- Document/
+|   |   |-- ProductSearchDocument.php
+|   |   |-- ProductSearchPrice.php
+|   |   `-- ProductSearchStock.php
+|   |-- Indexing/
+|   |   |-- BulkIndexFailure.php
+|   |   `-- BulkIndexResult.php
+|   `-- Rebuild/
+|       |-- ProductSearchReindexProgress.php
+|       `-- ProductSearchReindexResult.php
+|-- ProductSearchDocumentBuilder.php
+`-- ProductSearchRebuilder.php
+```
+
+Prefer names such as `Document`, `Indexing`, or `Rebuild` when they reflect stable scenario concepts. Avoid vague buckets such as `Common`, `Models`, or `Data`. Do not create a subnamespace merely for one DTO unless it is already a clear extension point or part of an established project convention.
+
+If a more specific stable concept describes the group, prefer that concept over a generic `Dto` directory. Integration-specific response objects may belong together under a namespace such as `Infrastructure\Elasticsearch\Bulk` instead of `Infrastructure\Elasticsearch\Dto`.
+
+Place a DTO according to the layer that owns its meaning:
+
+- use-case documents, progress snapshots, and results belong to the application layer;
+- transport request/response DTOs belong to the relevant input adapter or established API boundary;
+- external-client response wrappers belong to the output adapter or integration namespace;
+- domain entities and value objects are not DTOs and must not be moved into `Dto`.
+
+When the namespace already communicates `Dto`, avoid adding a redundant `Dto` suffix to every class unless the existing project convention requires it. During a namespace refactoring, move the files and update imports, port signatures, PHPDoc, tests, and dependency-injection references together without changing behavior.
+
+This namespace guidance is intentionally scoped to DTOs and application collections. Do not infer a project-wide requirement to split every group of classes into subnamespaces.
+
 ## Generic Abstractions
 
 Do not start with a reusable generic collection. First create the concrete collection that the use case needs.
@@ -167,5 +217,8 @@ When reviewing code, ask:
 5. Would a named collection reduce coupling to raw DTO/entity structure?
 6. Would the collection add real language, or only hide a loop?
 7. Does the behavior belong to persisted entity state, or to an application scenario?
+8. Are multiple DTOs mixed with services in one namespace, and would a nested `Dto` namespace make ownership clearer?
+9. Is there a more specific integration or feature concept than the generic name `Dto`?
+10. Has the `Dto` namespace accumulated several distinct scenario groups that deserve meaning-based subnamespaces?
 
 Create the collection only when the answers show stable meaning and repeated behavior.
