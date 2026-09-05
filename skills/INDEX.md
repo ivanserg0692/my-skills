@@ -25,7 +25,11 @@ Skills written by the project owner.
 ### Symfony REST Implementation
 
 - `symfony-rest-request-validation`
+
+### Doctrine ORM
+
 - `doctrine-repository-query-builder`
+- `doctrine-bidirectional-associations` - keeps owning and inverse entity associations synchronized in memory
 
 ### Application Architecture
 

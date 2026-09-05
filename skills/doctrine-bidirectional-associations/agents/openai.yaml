@@ -1,0 +1,4 @@
+interface:
+  display_name: "Doctrine Bidirectional Associations"
+  short_description: "Keep Doctrine association sides synchronized."
+  default_prompt: "Use $doctrine-bidirectional-associations to review or implement safe bidirectional Doctrine entity association methods."

@@ -2,9 +2,9 @@
 name: hexagonal-architecture
 description: >
   Use when structuring a Symfony app with ports & adapters / clean architecture —
-  keeping the domain framework-free, defining interfaces (ports) in the domain and
-  implementations (adapters) in infrastructure. Use when the task mentions hexagonal,
-  ports/adapters, or "keep the domain pure".
+  keeping the domain framework-free, defining application input ports and inward-owned
+  output ports, and implementing adapters in infrastructure. Use when the task mentions
+  hexagonal, ports/adapters, or "keep the domain pure".
 ---
 
 # Hexagonal Architecture (Ports & Adapters)
@@ -27,7 +27,19 @@ description: >
         └─────────────────────────────────────────┘
 ```
 
-**Source code dependencies point inward.** The domain knows nothing about Symfony, Doctrine, or HTTP. Outer layers depend on inner-layer **interfaces**, never the reverse.
+**Source code dependencies point inward.** The domain knows nothing about Symfony, Doctrine, or HTTP. Outer layers depend on inner-layer contracts, never the reverse.
+
+There are two directions of interaction at the application boundary:
+
+```text
+driving infrastructure adapter -> application input port -> use case
+use case -> output port <- driven infrastructure adapter
+```
+
+- **Input ports** are owned by the application layer. They describe use cases that driving adapters may invoke. HTTP controllers, Console commands, and Messenger handlers depend on these ports.
+- **Output ports** are owned by the innermost layer that needs the external capability, usually the application or domain layer. Infrastructure implements them for Doctrine, Elasticsearch, message brokers, clocks, locks, and other external systems.
+
+Do not introduce an interface for every internal class. Create a port when an operation crosses an architectural boundary or is intentionally exposed as a stable use-case contract.
 
 ## Suggested package layout
 
@@ -38,11 +50,12 @@ src/
 │   │   ├── Order.php           # aggregate root (plain object, no #[ORM\...])
 │   │   ├── OrderId.php         # value object
 │   │   ├── OrderStatus.php     # enum
-│   │   └── OrderRepository.php  # PORT (interface)
+│   │   └── OrderRepository.php  # OUTPUT PORT owned by the domain
 ├── Application/                # use cases — orchestrates domain via ports
 │   └── Order/
-│       ├── CreateOrderHandler.php
-│       └── CreateOrderCommand.php
+│       ├── CreateOrder.php      # INPUT PORT
+│       ├── CreateOrderHandler.php # use-case implementation
+│       └── CreateOrderCommand.php # input contract
 └── Infrastructure/             # adapters — implement ports using Symfony/Doctrine
     ├── Persistence/Doctrine/
     │   ├── DoctrineOrderRepository.php   # ADAPTER implements Domain\Order\OrderRepository
@@ -51,9 +64,9 @@ src/
         └── CreateOrderController.php     # driving adapter
 ```
 
-## Ports live in the domain
+## Output ports are owned inward
 
-A **port** is an interface the domain owns and the infrastructure implements.
+An **output port** is an interface owned by the inner layer that needs an external capability. A repository used directly by the domain belongs in the domain. An external capability needed only to orchestrate a use case may belong in the application layer. Infrastructure implements the port in either case.
 
 ```php
 // ✅ src/Domain/Order/OrderRepository.php — no framework imports
@@ -134,6 +147,20 @@ State the chosen strategy in the project README so the agent stays consistent.
 
 One handler per use case. It depends only on **ports**, never on adapters.
 
+Define an input port when a driving infrastructure adapter enters the application through that use case:
+
+```php
+// ✅ src/Application/Order/CreateOrder.php — INPUT PORT
+namespace App\Application\Order;
+
+use App\Domain\Order\OrderId;
+
+interface CreateOrder
+{
+    public function create(CreateOrderCommand $command): OrderId;
+}
+```
+
 ```php
 // ✅ src/Application/Order/CreateOrderHandler.php
 namespace App\Application\Order;
@@ -142,11 +169,11 @@ use App\Domain\Order\Order;
 use App\Domain\Order\OrderId;
 use App\Domain\Order\OrderRepository;
 
-final readonly class CreateOrderHandler
+final readonly class CreateOrderHandler implements CreateOrder
 {
     public function __construct(private OrderRepository $orders) {}
 
-    public function __invoke(CreateOrderCommand $command): OrderId
+    public function create(CreateOrderCommand $command): OrderId
     {
         $order = Order::place(OrderId::generate());
         $this->orders->save($order);
@@ -158,7 +185,32 @@ final readonly class CreateOrderHandler
 
 ## Driving adapters
 
-Controllers, console commands, and Messenger handlers are **driving adapters**. They translate a delivery mechanism into an application call and translate the result back out. They contain no business logic.
+Controllers, Console commands, and Messenger handlers are **driving adapters**. They translate a delivery mechanism into an input-port call and translate the result back out. They contain no business logic and, when the project uses a strict application boundary, depend on the input-port interface rather than a concrete use-case implementation.
+
+```php
+// ✅ src/Infrastructure/Http/CreateOrderController.php — driving adapter
+namespace App\Infrastructure\Http;
+
+use App\Application\Order\CreateOrder;
+use App\Application\Order\CreateOrderCommand;
+
+final readonly class CreateOrderController
+{
+    public function __construct(private CreateOrder $createOrder) {}
+
+    public function __invoke(CreateOrderCommand $command): string
+    {
+        return $this->createOrder->create($command)->toString();
+    }
+}
+```
+
+Wire the input port to its application implementation just as output ports are wired to infrastructure adapters:
+
+```yaml
+services:
+    App\Application\Order\CreateOrder: '@App\Application\Order\CreateOrderHandler'
+```
 
 ## Data contracts belong to ports
 
@@ -204,6 +256,9 @@ application DTO -> output-port document contract <- infrastructure adapter
 - Agent puts `EntityManagerInterface` into the application/domain layer — depend on a repository **port** instead.
 - Agent imports `Symfony\…` or `Doctrine\…` in `src/Domain/` — the domain must stay framework-free (or use the agreed pragmatic exception for ORM attributes only).
 - Agent makes the application layer depend on the concrete `DoctrineOrderRepository` — depend on the interface; wire it in `services.yaml`.
+- Agent makes an infrastructure controller, Console command, or Messenger handler depend directly on a concrete application use-case implementation even though the project uses strict input-port boundaries — define an application-owned input port and inject that contract.
+- Agent places an input port in infrastructure — the application owns the operations through which driving adapters invoke it.
+- Agent assumes every port belongs in the domain — input ports belong in the application, while output ports belong to the innermost layer that needs the capability.
 - Agent returns a Symfony `Response` from a use-case handler — return a domain value (ID, DTO); the controller builds the HTTP response.
 - Agent types an output port or its collection PHPDoc with a concrete application DTO even though the adapter needs only a smaller contract — define that contract at the port boundary.
 - Agent defines a data contract under `Infrastructure` and makes the application implement it — move ownership inward so infrastructure depends on the port.
