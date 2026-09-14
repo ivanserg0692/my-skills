@@ -35,6 +35,7 @@ Skills written by the project owner.
 ### Application Architecture
 
 - `application-collections` - chooses collection shapes and organizes related DTOs into clear, meaning-based namespaces
+- `encapsulate-infrastructure-data` - keeps external protocol arrays behind focused builders, adapters, and DTOs
 
 ## Adapted Skills
 

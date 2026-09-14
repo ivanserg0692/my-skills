@@ -1,0 +1,4 @@
+interface:
+  display_name: "Encapsulate Infrastructure Data"
+  short_description: "Keep Elasticsearch, SQL, and HTTP payload shapes behind adapters."
+  default_prompt: "Review this integration for raw infrastructure arrays leaking across layers and propose or implement a focused encapsulation boundary."

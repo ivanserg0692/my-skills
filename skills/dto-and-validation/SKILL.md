@@ -17,6 +17,18 @@ description: >
 
 A response DTO is one response-contract strategy, not a requirement for every endpoint. A Doctrine entity with explicit Symfony serialization groups is also acceptable. Prefer a response DTO when the API contract needs transformed fields, independent versioning, or stronger isolation from the persistence model.
 
+## Prefer DTO factories over trivial mappers
+
+When mapping one source object into one response DTO is local and deterministic, put the conversion on the DTO as a named static factory:
+
+- `fromEntity()` for ORM/domain objects;
+- `fromDocument()` for search or other read-model documents;
+- `fromArray()` for already-normalized payloads.
+
+Do not introduce a dedicated mapper class solely to copy fields into one DTO. Keep nested conversions composable by delegating to the nested DTO factories, for example `array_map(LineResponse::fromEntity(...), ...)`.
+
+Use a separate mapper when the transformation coordinates multiple independent sources, is shared by several unrelated DTOs, contains substantial non-trivial mapping rules, or must remain independent of the source model because of a strict layer boundary. Preserve the API contract when choosing between a factory and a mapper.
+
 ```php
 // ✅ Request DTO — constraints live here
 final class CreateOrderRequest
