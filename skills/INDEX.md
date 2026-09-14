@@ -14,6 +14,7 @@ Skills written by the project owner.
 ### Skill Maintenance
 
 - `maintain-skills-index`
+- `symfony-di-configuration` - keeps environment-backed configuration in `services.yaml` and structural DI wiring in PHP attributes where appropriate
 
 ### Symfony Service Setup
 
