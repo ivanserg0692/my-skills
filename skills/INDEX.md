@@ -36,6 +36,7 @@ Skills written by the project owner.
 
 - `application-collections` - chooses collection shapes and organizes related DTOs into clear, meaning-based namespaces
 - `encapsulate-infrastructure-data` - keeps external protocol arrays behind focused builders, adapters, and DTOs
+- `information-expert` - places behavior with the object that owns the information it needs, while keeping use-case orchestration in services
 
 ## Adapted Skills
 
