@@ -23,6 +23,10 @@ Skills written by the project owner.
 - `setup-symfony-rest-service`
 - `service-maintenance`
 
+### Project Tooling
+
+- `maintain-project-prerequisites` - keeps the external CLI check and README prerequisite list aligned with project workflows
+
 ### Symfony REST Implementation
 
 - `symfony-rest-request-validation`
