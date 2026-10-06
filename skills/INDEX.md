@@ -6,6 +6,7 @@ Skills written by the project owner.
 
 ### Documentation / Project Process
 
+- `project-change-approval` - requires a concrete change plan and `делаем` before project files are changed
 - `create-project-task`
 - `create-merge-request-description`
 - `documentation-toc`
