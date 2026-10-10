@@ -27,7 +27,7 @@ Skills written by the project owner.
 ### Project Tooling
 
 - `maintain-project-prerequisites` - keeps the external CLI check and README prerequisite list aligned with project workflows
-- `write-maintainable-scripts` - keeps JavaScript and Bash utility scripts and their comments clear without changing operational behavior
+- `write-maintainable-scripts` - keeps JavaScript and Bash utility scripts readable, names immutable JavaScript constants in `SCREAMING_SNAKE_CASE`, and extracts meaningful numbers from calculations
 
 ### Symfony REST Implementation
 
