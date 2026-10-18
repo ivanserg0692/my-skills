@@ -40,7 +40,7 @@ Skills written by the project owner.
 
 ### Application Architecture
 
-- `environment-isolation` - keeps dev, prod, and test-load independent when designing services, infrastructure, and Kubernetes deployments
+- `environment-isolation` - keeps dev, prod, and test-load independent and limits configuration and secrets to the components that use them
 - `application-collections` - chooses collection shapes and organizes related DTOs into clear, meaning-based namespaces
 - `encapsulate-infrastructure-data` - keeps external protocol arrays behind focused builders, adapters, and DTOs
 - `information-expert` - places behavior with the object that owns the information it needs, while keeping use-case orchestration in services
