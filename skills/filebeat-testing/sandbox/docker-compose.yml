@@ -1,0 +1,20 @@
+services:
+  conflict:
+    image: docker.elastic.co/beats/filebeat:9.5.2
+    user: root
+    command: ["-e", "--strict.perms=false"]
+    volumes:
+      - ./filebeat-conflict.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./samples:/logs:ro
+    tmpfs:
+      - /tmp/filebeat-data-conflict
+
+  fixed:
+    image: docker.elastic.co/beats/filebeat:9.5.2
+    user: root
+    command: ["-e", "--strict.perms=false"]
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./samples:/logs:ro
+    tmpfs:
+      - /tmp/filebeat-data-fixed

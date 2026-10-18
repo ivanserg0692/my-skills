@@ -1,0 +1,4 @@
+interface:
+  display_name: "Filebeat Testing"
+  short_description: "Test Filebeat changes in an isolated sandbox."
+  default_prompt: "Use $filebeat-testing to test Filebeat configuration changes in the bundled Docker sandbox before proposing Kubernetes changes."
