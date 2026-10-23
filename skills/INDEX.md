@@ -44,7 +44,8 @@ Skills written by the project owner.
 - `environment-isolation` - keeps dev, prod, and test-load independent and limits configuration and secrets to the components that use them
 - `application-collections` - chooses collection shapes and organizes related DTOs into clear, meaning-based namespaces
 - `encapsulate-infrastructure-data` - keeps external protocol arrays behind focused builders, adapters, and DTOs
-- `information-expert` - places behavior with the object that owns the information it needs, while keeping use-case orchestration in services
+- `information-expert` - designs and reviews state and behavior ownership across application, domain, and UI components in any language, keeping shared operations in the coordinator
+- `polymorphism` - compares conditional dispatch with behavioral contracts and composition across languages, without mechanically replacing switches or moving application operations into DTOs
 
 ## Adapted Skills
 

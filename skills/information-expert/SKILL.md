@@ -1,11 +1,23 @@
 ---
 name: information-expert
-description: Use when generating, reviewing, or refactoring application or domain code where a service or helper extracts another object's data to calculate, merge, validate, or transform that object's state. Apply GRASP Information Expert to decide whether the behavior belongs on the data-owning object; keep use-case orchestration in services.
+description: Use when designing, reviewing, or refactoring state ownership in application, domain, or UI components in any language, including Go and PHP. Identify behavior that belongs with its data, helpers that unpack another object's state, and models that combine independently evolving responsibilities; keep shared operations in the coordinating component.
 ---
 
 # Information Expert
 
 Assign an operation to the object that has the information needed to perform it, when that responsibility fits the object's meaning. Use this principle to improve cohesion and reduce how much other classes know about the object's structure. A DTO label alone is not a reason to keep meaningful behavior outside the object.
+
+Apply this guidance across languages and frameworks. PHP examples illustrate ownership decisions, not a requirement to use classes or inheritance. In Go, use structs, methods, composition, and small consumer-owned interfaces where they improve a real contract.
+
+## Component state ownership
+
+A single model may already own all the data while combining several independently evolving responsibilities. Check whether local state, event handling, validation, and rendering naturally belong to separate components, especially in UI roots and state machines. Apply SRP to those responsibility boundaries; keep shared operations and lifecycle coordination with the root or application service.
+
+Apply this check during initial design, before a large model or helper exists, as well as during review and refactoring. When behavior also varies by type, mode, or component identity, apply [polymorphism](../polymorphism/SKILL.md) to compare conditional dispatch with behavioral contracts. This skill determines ownership; the polymorphism skill guides dispatch choices. Use both when both concerns are present.
+
+Extraction should move relevant state and behavior together. A handler that receives the entire root model or service container preserves the original coupling. Prefer focused value snapshots, events, and requests; retain the ordering of synchronous updates and asynchronous effects. Do not introduce interfaces for every struct, a component registry, or a package per screen without a concrete need.
+
+For example, a Go form component can own its text inputs, focus, and draft configuration, implement `update(tea.Msg)` and `view()`, and return a typed save request. The root handles persistence and cancellation and returns operation results through an explicit contract. Passing `*rootModel` into `form.update` would leave responsibility for the form's internals spread across components. In Go, unexported fields provide package-level access control; grouping components in one package also relies on respecting their method contracts.
 
 ## Look for misplaced responsibility
 

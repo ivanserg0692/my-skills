@@ -213,6 +213,8 @@ For arrays of objects you **must** give the `@var ItemType[]` PHPDoc — the Ser
 
 When a field can be one of several shapes (`{"type": "card", ...}` vs `{"type": "paypal", ...}`), use a `#[DiscriminatorMap]` on an abstract base so the Serializer picks the right concrete DTO.
 
+This selects an input data shape; it does not make the DTO responsible for executing payments, persistence, or other application operations. When application behavior also varies after deserialization, apply [polymorphism](../polymorphism/SKILL.md) to choose its behavioral contract. Keep Symfony serialization and validation rules here; the universal skill does not replace them.
+
 ```php
 #[DiscriminatorMap(typeProperty: 'type', mapping: [
     'card'   => CardPaymentRequest::class,
