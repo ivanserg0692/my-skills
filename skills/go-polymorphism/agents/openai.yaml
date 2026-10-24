@@ -1,0 +1,4 @@
+interface:
+  display_name: "Go Polymorphism"
+  short_description: "Design small Go interfaces and practical dependency injection"
+  default_prompt: "Use $go-polymorphism to review Go behavior contracts, dependency injection, and unnecessary dispatch layers."
