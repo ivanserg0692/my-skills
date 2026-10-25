@@ -47,6 +47,7 @@ Skills written by the project owner.
 - `information-expert` - designs and reviews state and behavior ownership across application, domain, and UI components in any language, keeping shared operations in the coordinator
 - `polymorphism` - compares conditional dispatch with behavioral contracts and composition across languages, without mechanically replacing switches or moving application operations into DTOs
 - [`go-polymorphism`](go-polymorphism/SKILL.md) - designs Go consumer-owned interfaces, constructor injection, DIP and ISP, and simplifies unnecessary dispatch and forwarding layers
+- [`go-tui-templating`](go-tui-templating/SKILL.md) - declares Go terminal view structure with text/template while separating presentation data, Lip Gloss styling, and bounded layout
 
 ## Adapted Skills
 
