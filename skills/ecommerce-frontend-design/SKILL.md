@@ -23,6 +23,7 @@ Resolve links relative to this skill directory. For commands run from the applic
 ## Apply the Basis to the Requested Change
 
 - Follow the documented violet accent, Inter typography, rounded cards, restrained borders/shadows, container width, and responsive grid. Account for Light, Dark, and System according to the documented theme approach and actual implementation state.
+- All storefront layouts must be responsive across desktop, tablet, and mobile widths. Reflow grids, navigation, filters, and page sections to fit the available space rather than merely shrinking the desktop layout. Keep text readable and controls usable by touch, and prevent unintended horizontal page overflow.
 - Preserve existing working Next.js/React/Refine components, routing, localization, providers, and integrations where practical. Use the documented distinction between composed storefront pages and Refine resource workflows when choosing components.
 - Check installed dependencies before selecting UI libraries. A recommendation for Tailwind, shadcn/ui, Lucide, or next-themes does not mean it is installed or authorize installation.
 - Match visible controls to verified data and capabilities. Do not infer popularity, reviews, variants, product galleries, payment, or delivery support from prototype illustrations. Use the affected page's support level and documented limitations to shape the UI.
@@ -34,6 +35,6 @@ Resolve links relative to this skill directory. For commands run from the applic
 
 The saved documentation and prototypes do not authorize implementation, backend changes, or new dependencies. Apply the project's change-approval workflow to the concrete task, using existing approval when it already covers the proposed work.
 
-For an implementation or review, identify the affected pages, API contracts, reused components, and remaining blockers. When relevant and available, verify the changed UI in both themes and at desktop/mobile sizes, including loading, empty, error, and authentication states. Follow project verification restrictions: use targeted checks and do not run frontend builds.
+For an implementation or review, identify the affected pages, API contracts, reused components, and remaining blockers. For layout changes, verify the changed UI at desktop, tablet, and mobile widths in both themes when preview tools are available; report any unverified sizes or states. Include relevant loading, empty, error, and authentication states. Follow project verification restrictions: use targeted checks and do not run frontend builds.
 
 If an approved change alters a documented route, contract, or design decision, identify the corresponding design documentation update and handle it within the authorized scope. Keep observed behavior, proposed work, and unsupported capabilities distinguishable.
