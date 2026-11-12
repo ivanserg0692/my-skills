@@ -34,6 +34,10 @@ Skills written by the project owner.
 
 - `symfony-rest-request-validation`
 
+### E-commerce Frontend
+
+- [`ecommerce-frontend-design`](ecommerce-frontend-design/SKILL.md) - uses the documented storefront design, prototypes, page map, and verified API capabilities for frontend planning, implementation, and review
+
 ### Doctrine ORM
 
 - `doctrine-repository-query-builder`
