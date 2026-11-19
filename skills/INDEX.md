@@ -45,6 +45,7 @@ Skills written by the project owner.
 
 ### Application Architecture
 
+- [`avoid-overengineering`](avoid-overengineering/SKILL.md) - requires approval for unused capabilities outside the task while preserving necessary validation, error handling, boundary cases, and useful diagnostics
 - `environment-isolation` - keeps dev, prod, and test-load independent and limits configuration and secrets to the components that use them
 - `application-collections` - chooses collection shapes and organizes related DTOs into clear, meaning-based namespaces
 - `encapsulate-infrastructure-data` - keeps external protocol arrays behind focused builders, adapters, and DTOs
