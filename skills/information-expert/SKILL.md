@@ -49,6 +49,12 @@ A result that gains natural behavior may become a Result Object rather than a pa
 
 Keep orchestration in an application or domain service when the operation needs repositories, persistence or transactions, HTTP/gRPC/API calls, a message broker, infrastructure dependencies, or coordination among several independent models. Do not make a result object responsible for those collaborators just to place more logic inside it.
 
+## Make conditional dependencies explicit
+
+When a caller knows whether a branch applies, let it pass the data needed for that branch. Prefer an optional parameter when absence has a clear meaning. If different modes require different inputs and invalid combinations are possible, consider distinct typed inputs or separate operations. Keep the decision with the code that owns the selection or mode.
+
+For example, `catalogFilters(value, sectionIds?)` builds query filters from search criteria and optional section IDs. The caller checks whether a section is selected and resolves its descendant IDs only in that case. The same boundary applies to a backend query builder that receives optional section IDs for a storefront search.
+
 ## Review and refactor
 
 When reporting a candidate, identify the class that currently knows too much, the information it extracts, and the proposed Information Expert. Explain how the change affects cohesion and coupling, and describe trade-offs such as mutability, API surface, allocation, and behavior preservation where relevant. If ownership is ambiguous or the existing code is clearer, say so rather than forcing a move.

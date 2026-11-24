@@ -31,6 +31,12 @@ Resolve links relative to this skill directory. For commands run from the applic
 - When current source differs from the report, explain the discrepancy and its effect on the requested change. Do not silently preserve a stale contract or implement a speculative backend feature.
 - Explicit user instructions and subsequently approved changes take precedence over this design basis. Explain material departures from the documented direction; do not expand a small frontend task into a redesign.
 
+## Keep storefront query logic cohesive
+
+When a storefront component mixes URL handling, query coordination, and JSX, group the related state and behavior by responsibility. In the catalog, a local URL hook reads and writes filter and pagination parameters, and a local data hook coordinates Refine requests and exposes the data, loading states, and retry actions used by the view. The component owns rendering and UI interactions such as opening and closing the filter drawer. Keep hooks in the component file while their scope is local.
+
+Pass resource names as props to storefront list components that are used across routes or with different resources. Let Refine resolve the provider from the registered resource's `meta.dataProviderName` unless a caller needs an explicit override. Keep resource-specific card and detail components focused on their existing use cases.
+
 ## Keep Scope and Validation Explicit
 
 The saved documentation and prototypes do not authorize implementation, backend changes, or new dependencies. Apply the project's change-approval workflow to the concrete task, using existing approval when it already covers the proposed work.
